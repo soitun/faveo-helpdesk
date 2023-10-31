@@ -60,7 +60,7 @@ Route::middleware('web')->group(function () {
     // Auth login
     Route::get('auth/login/{one?}/{two?}/{three?}/{four?}/{five?}', [Auth\AuthController::class, 'getLogin'])->name('auth.login');
     Route::post('auth/login', [Auth\AuthController::class, 'postLogin'])->name('auth.post.login');
-    Route::get('user/search', [Client\kb\UserController::class, 'search'])->name('client.search');
+    Route::match(['get', 'post'], 'user/search', [Client\kb\UserController::class, 'search'])->name('client.search');
 
     Breadcrumbs::register('auth.login', function ($breadcrumbs) {
 //        $breadcrumbs->parent('/');
@@ -347,6 +347,7 @@ Route::middleware('web')->group(function () {
 
         Route::post('/newticket/post', [Agent\helpdesk\TicketController::class, 'post_newticket'])->name('post.newticket'); /*  Post Create New Ticket */
         Route::get('/thread/{id}', [Agent\helpdesk\TicketController::class, 'thread'])->name('ticket.thread'); /*  Get Thread by ID */
+        Route::get('ticket/tooltip', [Agent\helpdesk\TicketController::class, 'getTooltip'])->name('ticket.tooltip');
 
         Route::post('/thread/reply/{id}', [Agent\helpdesk\TicketController::class, 'reply'])->name('ticket.reply'); /*  Patch Thread Reply */
         Route::patch('/internal/note/{id}', [Agent\helpdesk\TicketController::class, 'InternalNote'])->name('Internal.note'); /*  Patch Internal Note */
@@ -525,12 +526,13 @@ Route::middleware('web')->group(function () {
     Route::get('check_ticket/{id}', [Client\helpdesk\GuestController::class, 'get_ticket_email'])->name('check_ticket'); //detail ticket information
 
     // show ticket via have a ticket
-    Route::get('show-ticket/{id}/{code}', [Client\helpdesk\UnAuthController::class, 'showTicketCode'])->name('show.ticket'); //detail ticket information
+    Route::get('show-ticket/{ids}/{code}', [Client\helpdesk\UnAuthController::class, 'showTicketCode'])->name('show.ticket'); //detail ticket information
 
     //testing ckeditor
     //===================================================================================
     Route::middleware('auth')->group(function () {
         Route::get('client-profile', [Client\helpdesk\GuestController::class, 'getProfile'])->name('client.profile'); /*  User profile get  */
+        Route::post('select/all', [Agent\helpdesk\TicketController::class, 'select_all'])->name('select_all');
 
         Route::get('mytickets', [Client\helpdesk\GuestController::class, 'getMyticket'])->name('ticket2');
         Route::get('myticket/{id}', [Client\helpdesk\GuestController::class, 'thread'])->name('ticket'); /* Get my tickets */
@@ -708,6 +710,10 @@ Route::middleware('web')->group(function () {
     Route::post('show/rating/{id}', [Client\helpdesk\UnAuthController::class, 'rating'])->name('show.rating'); /* Get overall Ratings */
     Route::post('show/rating2/{id}', [Client\helpdesk\UnAuthController::class, 'ratingReply'])->name('show.rating2'); /* Get reply Ratings */
     Route::get('show/change-status/{status}/{id}', [Client\helpdesk\UnAuthController::class, 'changeStatus'])->name('show.change.status'); /* Get reply Ratings */
+    Route::post('show/close/{id}', [Client\helpdesk\UnAuthController::class, 'close'])->name('show.close'); /* Get reply Ratings */
+    Route::post('show/open/{id}', [Client\helpdesk\UnAuthController::class, 'open'])->name('show.open'); /* Get reply Ratings */
+    Route::post('show/resolve/{id}', [Client\helpdesk\UnAuthController::class, 'resolve'])->name('show.resolve'); /* Get reply Ratings */
+
     /* get the home page */
     Route::get('knowledgebase', [Client\kb\UserController::class, 'home'])->name('home');
     /* get the faq value to user */
@@ -718,13 +724,13 @@ Route::middleware('web')->group(function () {
     /* post the cantact page to controller */
     Route::post('post-contact', [Client\kb\UserController::class, 'postContact'])->name('post-contact');
     //to get the value for page content
-    Route::get('pages/{name}', [Client\kb\UserController::class, 'getPage'])->name('pages');
+    Route::get('pages/{id}', [Client\kb\UserController::class, 'getPage'])->name('pages');
 
     Route::get('/inbox/data', [Agent\helpdesk\TicketController::class, 'get_inbox'])->name('api.inbox');
 //    Route::get('/report', 'HomeController@getreport');
 //    Route::get('/reportdata', 'HomeController@pushdata');
 
-    /*
+    /*reg
      * Update module
      */
     Route::get('database-update', [Update\UpgradeController::class, 'databaseUpdate'])->name('database.update');
@@ -798,5 +804,13 @@ Route::middleware('web')->group(function () {
     //     $breadcrumbs->parent('dashboard');
     //     $breadcrumbs->push(Lang::get('lang.tickets') . '&nbsp; > &nbsp;' . Lang::get('lang.open'), route('open.ticket'));
     // });
+    Route::get('check_ticket/swtich-language/{id}', [Client\helpdesk\UnAuthController::class, 'changeUserLanguage']);
+    Route::get('category-list/swtich-language/{id}', [Client\helpdesk\UnAuthController::class, 'changeUserLanguage']);
+    Route::get('show/swtich-language/{id}', [Client\helpdesk\UnAuthController::class, 'changeUserLanguage']);
+    Route::get('pages/swtich-language/{id}', [Client\helpdesk\UnAuthController::class, 'changeUserLanguage'])->name('switch-user-lang');
     Route::get('swtich-language/{id}', [Client\helpdesk\UnAuthController::class, 'changeUserLanguage'])->name('switch-user-lang');
+    Route::get('thread/swtich-language/{id}', [Client\helpdesk\UnAuthController::class, 'changeUserLanguage'])->name('switch-user-lang');
+    Route::get('ticket/swtich-language/{id}', [Client\helpdesk\UnAuthController::class, 'changeUserLanguage'])->name('switch-user-lang');
+    Route::get('social/swtich-language/{id}', [Client\helpdesk\UnAuthController::class, 'changeUserLanguage'])->name('switch-user-lang');
+    Route::get('language/swtich-language/{id}', [Client\helpdesk\UnAuthController::class, 'changeUserLanguage'])->name('switch-user-lang');
 });

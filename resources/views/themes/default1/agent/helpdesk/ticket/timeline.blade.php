@@ -1,4 +1,5 @@
 @extends('themes.default1.agent.layout.agent')
+<meta charset="utf-8">
 
 @section('Tickets')
 class="nav-link active"
@@ -137,28 +138,41 @@ if ($thread->title != "") {
 
             if ($group->can_edit_ticket == 1) {
                 ?>
-                <button type="button" class="btn btn-sm btn-default btn-tool" id="Edit_Ticket" data-toggle="modal" data-target="#Edit"><i class="fas fa-edit" style="color:green;"> </i> {!! Lang::get('lang.edit') !!}</button>
-            <?php } ?>
+            <button type="button" class="btn btn-sm btn-default btn-tool">
+
+                <i class="fas fa-edit" style="color:green;"></i> {{trans('lang.edit')}}
+
+            </button>            <?php } ?>
 
             <?php if ($group->can_assign_ticket == 1) { ?>
-                <button type="button" class="btn btn-sm btn-default btn-tool" data-toggle="modal" data-target="#assign{{$tickets->id}}"><i class="fas fa-hand-point-right" style="color:orange;"> </i> {!! Lang::get('lang.assign') !!}</button>
-            <?php } ?>
+            <button type="button" class="btn btn-sm btn-default btn-tool">
+
+                <i class="fas fa-hand-point-right" style="color:orange;"></i> {{trans('lang.assign')}}
+
+            </button>            <?php } ?>
 
             @if($tickets->assigned_to == Auth::user()->id)
-            <button type="button" id="surrender_button" class="btn btn-sm btn-default btn-tool" data-toggle="modal" data-target="#surrender"> <i class="fas fa-arrows-alt" style="color:red;"> </i>  {!! Lang::get('lang.surrender') !!}</button>
+                <button type="button" id="surrender_button" class="btn btn-sm btn-default btn-tool" data-toggle="modal" data-target="#surrender">
+
+                    <i class="fas fa-arrows-alt" style="color:red;"></i> {{trans('lang.surrender')}}
+
+                </button>
             @endif
 
 
             <?php \Illuminate\Support\Facades\Event::dispatch('show-add-event-btn', []); ?>
 
-            <a href="{{url('ticket/print/'.$tickets->id)}}" target="_blank" class="btn btn-default btn-tool btn-sm"><i class="fas fa-print" > </i> {!! Lang::get('lang.generate_pdf') !!}</a>
-            <div class="btn-group">
+            <a href="{{url('ticket/print/'.$tickets->id)}}" target="_blank" class="btn btn-default btn-tool btn-sm">
+
+                <i class="fas fa-print"></i> {{trans('lang.generate_pdf')}}
+
+            </a>            <div class="btn-group">
                 <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" id="d1"><i class="fas fa-exchange-alt" style="color:teal;" id="hidespin"> </i><i class="fa fa-spinner fa-spin" style="color:teal; display:none;" id="spin"></i>
                     {!! Lang::get('lang.change_status') !!} <span class="caret"></span>
                 </button>
                 <div class="dropdown-menu">
                     <a href="#" id="open" class="dropdown-item"><i class="fas fa-folder-open" style="color:red;"> </i> {!! Lang::get('lang.open') !!}</a>
-                   
+
                     <?php if ( $tickets_approval->status==7) {?>
                   @if(Auth::user()->role == 'admin')
                      <a href="#" id="approval_close" class="dropdown-item"><i class="fas fa-thumbs-up" style="color:red;"> </i> {!! Lang::get('lang.approval') !!}</a>
@@ -195,7 +209,7 @@ if ($thread->title != "") {
                         <?php }
                         ?>
                         <?php if ($group->can_ban_email == 1) { ?>
-                        <a href="#" class="dropdown-item" data-toggle="modal" data-target="#banemail"><i class="fas fa-ban" style="color:red;"></i> {!! Lang::get('lang.ban_email') !!}</a>
+                        <a href="#" class="dropdown-item" data-toggle="modal" data-target="#banemail"><i class="fas fa-ban" style="color:red;"></i> {{trans('lang.ban_email')}}</a>
                         <?php 
                         \Illuminate\Support\Facades\Event::dispatch('ticket.details.more.list',[$tickets]);
                         }
@@ -323,7 +337,7 @@ if ($thread->title != "") {
             
             <div class="card-header">
                 
-                <h3 class="card-title">Actions</h3>
+                <h3 class="card-title">{{trans('lang.action')}}</h3>
             </div>
 
                     <div class="card-body">
@@ -510,7 +524,7 @@ if ($thread->title != "") {
             <div class="card card-light">
                 
                 <div class="card-header">
-                    <h3 class="card-title">Ticket Conversation</h3>
+                    <h3 class="card-title">{{trans('lang.ticket_conversation')}}</h3>
                 </div>
 
                 <div class="card-body">
@@ -918,7 +932,7 @@ if ($thread->title != "") {
 
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal" id="dismis2">{!! Lang::get('lang.close') !!}</button>
-                        <button id="ban" type="button" class="btn btn-warning" >{!! Lang::get('lang.ban_email') !!}</button>
+                        <button id="ban" type="button" class="btn btn-warning" >{{trans('lang.ban_email')}}</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -1824,17 +1838,21 @@ if ($thread->title != "") {
                     $("#t1").hide();
                     $("#show3").show();
                     $('html, body').animate({
-                    scrollTop: $("#form3").offset().top
+                    scrollTop: $("#inboxactions").offset().top
                 }, 500);
             },
             success: function(json) {
+                $("#show3").hide();
+                $("#t1").show();
+                setTimeout(function () {
+                    location.reload();
+                }, 4000);
+
                 $("#alert21").show();
                 $('#message-success2').html(json.result.success);
-                location.reload();
-                
-                    // $('html, body').animate({ scrollTop: $("#heading").offset().top }, 500);
             },
-                    error: function(json) {
+
+                error: function(json) {
                     $("#show3").hide();
                     $("#t1").show();
                     var res = "";
@@ -1846,6 +1864,7 @@ if ($thread->title != "") {
             }
             })
             return false;
+
     });
 // Surrender
             $('#Surrender').on('click', function() {
@@ -2147,7 +2166,7 @@ echo $ticket_data->title;
                             // $("#alert21").show();
                             // $('#message-success2').html(message);
                             $('#replybtn').attr('disabled', false);
-                            // setInterval(function(){$("#alert21").hide(); },8000);  
+                            // setInterval(function(){$("#alert21").hide(); },8000);
                     } else if (response == 1 || response == 4){
                     // alert(response);
                     // var message = "{{Lang::get('lang.access-ticket')}}"+locktime/(60*1000)

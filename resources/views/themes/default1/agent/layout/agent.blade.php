@@ -21,12 +21,13 @@
         <link href="{{asset("lb-faveo/css/font-awesome-5.min.css")}}" rel="stylesheet" type="text/css" />
     
         <!-- Ionicons -->
-        <link href="{{asset("lb-faveo/css/ionicons.min.css")}}" rel="stylesheet"  type="text/css" />
+        <link href="{{asset("lb-faveo/css/ionicons.min.css")}}" rel="stylesheet"  type
+        ="text/css" />
     
         <!-- Theme style -->
-        <link href="{{asset("lb-faveo/adminlte3/css/adminlte3.min.css")}}" rel="stylesheet" type="text/css" />
+        <link href="{{asset("lb-faveo/adminlte3/css/adminlte3.2.0.min.css")}}" rel="stylesheet" type="text/css" />
 
-        <link href="{{asset("lb-faveo/adminlte3/plugins/overlayScrollbars/overlayScrollbars.min.css")}}" rel="stylesheet"  type="text/css" />
+        <link href="{{asset("lb-faveo/adminlte3/plugins/overlayScrollbars/overlayScrollbars3.2.0.min.css")}}" rel="stylesheet"  type="text/css" />
 
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <link href="{{asset("lb-faveo/css/editor.css")}}" rel="stylesheet" type="text/css"/>
@@ -36,15 +37,18 @@
         <link href="{{asset("lb-faveo/css/jquery.rating.css")}}" rel="stylesheet" type="text/css" />
     
         <!-- Select2 -->
-        <link href="{{asset("lb-faveo/plugins/select2/select2.min.css")}}" rel="stylesheet" type="text/css" />
+        <link href="{{asset("lb-faveo/plugins/select2/select2.3.2.0.min.css")}}" rel="stylesheet" type="text/css" />
 
         <link href="{{asset("css/close-button.css")}}" rel="stylesheet" type="text/css" />
         <!--Daterangepicker-->
         <link rel="stylesheet" href="{{asset("lb-faveo/css/bootstrap-datetimepicker4.7.14.min.css")}}" rel="stylesheet" type="text/css" />
 
-        <link href="{{asset("lb-faveo/plugins/summernote/summernote-bs4.min.css")}}" rel="stylesheet" type="text/css" />
+        <link href="{{asset("lb-faveo/plugins/summernote/summernote-bs5.min.css")}}" rel="stylesheet" type="text/css" />
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+
         <link href="{{asset("lb-faveo/css/jquery.ui.css")}}" rel="stylesheet" type="text/css" />
-        <script src="{{asset("lb-faveo/js/jquery-3.4.1.min.js")}}" type="text/javascript"></script>
+        <script src="{{asset("lb-faveo/js/jquery-3.6.3.min.js")}}" type="text/javascript"></script>
         <script src="{{asset("lb-faveo/js/jquery-migrate.js")}}" type="text/javascript"></script>
         <script src="{{asset("lb-faveo/js/popper.min.js")}}" type="text/javascript"></script>
         <!-- Bootstrap 3.3.2 JS -->
@@ -118,7 +122,7 @@
             }
             ?>
 
-             <nav class="main-header navbar navbar-expand navbar-dark navbar-lightblue">
+             <nav class="main-header navbar navbar-expand  navbar-light">
                 
                 <!-- Sidebar toggle button-->
                 <ul class="navbar-nav">
@@ -306,7 +310,7 @@
                                         class="img-size-50">
                                 </li>
                                 
-                                <li class="dropdown-footer"><a class="text-dark" href="{{ url('notifications-list')}}">View all</a>
+                                <li class="dropdown-footer"><a class="text-dark" href="{{ url('notifications-list')}}">{{trans('lang.view_all')}}</a>
                             </ul>
                         </div>
                     </li>
@@ -364,9 +368,9 @@
             </nav>
 
             <!-- Left side column. contains the logo and sidebar -->
-            <aside class="main-sidebar elevation-4 sidebar-dark-lightblue">
+            <aside class="main-sidebar elevation-4 sidebar-dark-black">
 
-                <a href="http://www.faveohelpdesk.com" class="brand-link navbar-lightblue" style="text-align: center;">
+                <a href="http://www.faveohelpdesk.com" class="brand-link " style="text-align: center;">
                     <img src="{{ asset('lb-faveo/media/images/logo.png')}}" class="brand-image" alt="Company Log0">
                 </a>
 
@@ -441,6 +445,7 @@
 
                             <li class="nav-header">{!! Lang::get('lang.Departments') !!}</li>
 
+
                             <?php
                             $flattened = $department->flatMap(function ($values) {
                                 return $values->keyBy('status');
@@ -468,7 +473,7 @@
                                 
                                 <a href="#" @if($dept2 === $name) @yield('ticket-bar') @endif class="nav-link">
                                     <i class="nav-icon fas fa-folder-open"></i>
-                                    <p>{!! $name !!}<i class="right fas fa-angle-left"></i></p>
+                                    <p>{!!trans('lang.'.strtolower($name))!!}<i class="right fas fa-angle-left"></i></p>
                                 </a>
                                 
                                 @foreach($statuses as $status)
@@ -479,7 +484,7 @@
                                     <li class="nav-item">
                                         <a href="{!! url('tickets?departments='.$name.'&status='.$dept->get($status)->status) !!}" @if($status2 == $dept->get($status)->status && $dept2 === $name) @yield('inbox') @endif class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
-                                            <p>{!!$dept->get($status)->status !!}</p>
+                                            <p>{!!trans('lang.'.strtolower($dept->get($status)->status)) !!}</p>
                                             <small class="right badge badge-success">{{$dept->get($status)->count}}</small>
                                         </a>
                                     </li>
@@ -508,7 +513,7 @@
                   @if($replacetop==0)
                   <div @yield('user') class="tab-pane" id="tab_user">
                         
-                        <nav class="navbar navbar-expand navbar-dark navbar-lightblue">
+                        <nav class="navbar navbar-expand  navbar-light">
                           
                           <ul class="navbar-nav">
                             
@@ -525,7 +530,7 @@
 
                     <div @yield('ticket') class="tab-pane" id="tab_ticket">
                         
-                        <nav class="navbar navbar-expand navbar-dark navbar-lightblue">
+                        <nav class="navbar navbar-expand navbar-light">
                           
                           <ul class="navbar-nav">
                             
@@ -556,7 +561,7 @@
 
                     <div @yield('tool') class="tab-pane" id="tab_tools">
                         
-                        <nav class="navbar navbar-expand navbar-dark navbar-lightblue">
+                        <nav class="navbar navbar-expand  navbar-light">
                           
                           <ul class="navbar-nav">
                             
@@ -648,28 +653,28 @@
                 <span style="font-weight: 500">{!! Lang::get('lang.copyright') !!} &copy; {!! date('Y') !!}  <a href="{!! $company->website !!}" target="_blank">{!! $company->company_name !!}</a>.</span> {!! Lang::get('lang.all_rights_reserved') !!}. {!! Lang::get('lang.powered_by') !!} <a href="http://www.faveohelpdesk.com/" target="_blank">Faveo</a>
             </footer>
         </div><!-- ./wrapper -->
-        <script src="{{asset("lb-faveo/adminlte3/js/adminlte3.min.js")}}" type="text/javascript"></script>
+        <script src="{{asset("lb-faveo/adminlte3/js/adminlte3.2.0.min.js")}}" type="text/javascript"></script>
         <!-- Slimscroll -->
-        <script src="{{asset("lb-faveo/adminlte3/plugins/overlayScrollbars/overlayScrollbars.min.js")}}" type="text/javascript"></script>
+        <script src="{{asset("lb-faveo/adminlte3/plugins/overlayScrollbars/overlayScrollbars3.2.0.min.js")}}" type="text/javascript"></script>
        
-        <script src="{{asset("lb-faveo/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
+        <script src="{{asset("lb-faveo/plugins/datatables/jquery.dataTables.3.2.0.js")}}" type="text/javascript"></script>
 
-        <script src="{{asset("lb-faveo/plugins/datatables/dataTables.bootstrap.js")}}" type="text/javascript"></script>
+        <script src="{{asset("lb-faveo/plugins/datatables/dataTables.bootstrap4.3.2.0.js")}}" type="text/javascript"></script>
 
         <script src="{{asset("lb-faveo/js/jquery.rating.pack.js")}}" type="text/javascript"></script>
 
-        <script src="{{asset("lb-faveo/plugins/select2/select2.full.min.js")}}" type="text/javascript"></script>
+        <script src="{{asset("lb-faveo/plugins/select2/select2.full.3.2.0.min.css.js")}}" type="text/javascript"></script>
 
-        <script src="{{asset("lb-faveo/plugins/moment/moment.js")}}" type="text/javascript"></script>
+        <script src="{{asset("lb-faveo/plugins/moment/moment.3.2.0.js")}}" type="text/javascript"></script>
 
         <!-- full calendar-->
         <script src="{{asset('lb-faveo/plugins/fullcalendar/fullcalendar.min.js')}}" type="text/javascript"></script>
 
-        <script src="{{asset('lb-faveo/plugins/daterangepicker/daterangepicker.js')}}" type="text/javascript"></script>
+        <script src="{{asset('lb-faveo/plugins/daterangepicker/daterangepicker.3.2.0.js')}}" type="text/javascript"></script>
 
         <script src="{{asset("lb-faveo/js/bootstrap-datetimepicker4.7.14.min.js")}}" type="text/javascript"></script>
 
-        <script src="{{asset("lb-faveo/plugins/summernote/summernote-bs4.min.js")}}" type="text/javascript"></script>
+        <script src="{{asset("lb-faveo/plugins/summernote/summernote-bs5.min.js")}}" type="text/javascript"></script>
 
         <script src="{{asset("lb-faveo/plugins/iCheck/icheck.min.js")}}" type="text/javascript"></script>
         {{-- jquery ui --}}

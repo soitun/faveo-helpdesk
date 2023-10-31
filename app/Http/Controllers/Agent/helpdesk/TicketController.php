@@ -437,7 +437,7 @@ class TicketController extends Controller
 
             return response()->json(compact('result'));
         }
-        $result = ['success' => 'Replyed successfully'];
+        $result = ['success' => Lang::get('lang.you_have_successfully_replied_to_your_ticket')];
 
         return response()->json(compact('result'));
     }
@@ -609,8 +609,8 @@ class TicketController extends Controller
      */
     public function checkMobile($mobile)
     {
-        $check = User::where('mobile', '=', $mobile)->first();
-        if (count($check) > 0) {
+        $check = User::where('mobile', '=', $mobile);
+        if ($check && $check->count() > 0) {
             return true;
         }
 
@@ -2321,7 +2321,7 @@ class TicketController extends Controller
      *
      *@param null
      *
-     *@return string //script to load tooltip data
+     * @return string //script to load tooltip data
      */
     public static function tooltip($ticketid)
     {
@@ -2672,7 +2672,7 @@ class TicketController extends Controller
      *
      *@param srting array $t_id, $p_id
      *
-     *@return null
+     * @return null
      */
     public function sendMergeNotification($p_id, $t_id)
     {
